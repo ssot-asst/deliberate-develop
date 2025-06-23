@@ -65,10 +65,57 @@ class UserFileRepositoryTest {
             .hasSize(2)
         then(users[0].id).isLessThan(users[1].id)
     }
-}
 
-fun UserFileRepository.deleteAll() {
-    val users = findAll().toMutableList()
-    users.clear()
-    objectMapper.writeValue(files, users)
+    @Test
+    fun `deleteAll은 모든 데이터를 삭제한다`() {
+        // given
+        val user1 = UserFileEntity(name = "나민혁", age = 26)
+        val user2 = UserFileEntity(name = "나나나", age = 53)
+        userFileRepository.save(user1)
+        userFileRepository.save(user2)
+
+        // when
+        userFileRepository.deleteAll()
+        // then
+        then(userFileRepository.findAll())
+            .isEmpty()
+    }
+
+    @Test
+    fun `findAll()은 모든 데이터를 조회한다`() {
+        // given
+        val user1 = UserFileEntity(name = "나민혁", age = 26)
+        val user2 = UserFileEntity(name = "나나나", age = 53)
+        userFileRepository.save(user1)
+        userFileRepository.save(user2)
+        // when
+        val users = userFileRepository.findAll()
+        // then
+        then(users)
+            .isNotEmpty
+            .hasSize(2)
+            .anySatisfy {
+                assertThat(it.name).isEqualTo("나민혁")
+                assertThat(it.age).isEqualTo(26)
+            }
+            .anySatisfy {
+                assertThat(it.name).isEqualTo("나나나")
+                assertThat(it.age).isEqualTo(53)
+            }
+
+    }
+
+    @Test
+    fun `findById()를 통해 id를 특정한 사용자를 찾을 수 있다`() {
+        // given
+        val user = UserFileEntity(name = "나민혁", age = 26)
+        val savedUser = userFileRepository.save(user)
+        // when
+        val foundUser = userFileRepository.findById(savedUser.id)
+        // then
+        then(foundUser)
+            .isNotNull
+            .extracting("name", "age")
+            .containsExactly("나민혁", 26)
+    }
 }

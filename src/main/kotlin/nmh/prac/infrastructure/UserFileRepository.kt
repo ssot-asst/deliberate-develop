@@ -23,6 +23,14 @@ class UserFileRepository(
 
     override fun save(user: UserModel): UserModel {
         val users = findAll().toMutableList()
+        if (user.id != 0L) {
+            val existingUserIndex = users.indexOfFirst { it.id == user.id }
+            if (existingUserIndex != -1) {
+                users[existingUserIndex] = user
+                objectMapper.writeValue(files, users)
+                return user
+            }
+        }
         val nextId = (users.maxOfOrNull { it.id } ?: 0) + 1
         user.id = nextId
         users.add(user)
@@ -30,12 +38,31 @@ class UserFileRepository(
         return user
     }
 
-    fun findAll(): List<UserModel> {
+    override fun findAll(): List<UserModel> {
         return objectMapper.readValue(
             files, objectMapper.typeFactory.constructCollectionType(
                 List::class.java,
                 UserFileEntity::class.java
             )
         )
+    }
+
+    override fun findById(id: Long): UserModel? {
+        return findAll().find { it.id == id }
+    }
+
+    override fun deleteAll() {
+        val users = findAll().toMutableList()
+        users.clear()
+        objectMapper.writeValue(files, users)
+    }
+
+    override fun deleteById(id: Long) {
+        val users = findAll().toMutableList()
+        val userToDelete = users.find { it.id == id }
+        if (userToDelete != null) {
+            users.remove(userToDelete)
+            objectMapper.writeValue(files, users)
+        }
     }
 }
