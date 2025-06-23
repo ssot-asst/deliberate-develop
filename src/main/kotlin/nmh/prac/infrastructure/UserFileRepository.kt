@@ -23,6 +23,8 @@ class UserFileRepository(
 
     override fun save(user: UserModel): UserModel {
         val users = findAll().toMutableList()
+        val nextId = (users.maxOfOrNull { it.id } ?: 0) + 1
+        user.id = nextId
         users.add(user)
         objectMapper.writeValue(files, users)
         return user

@@ -9,7 +9,7 @@ class UserFileService(
     private val userRepository: UserRepository
 ) : UserService {
     override fun register(name: String, age: Int): UserModel {
-        return userRepository.save(UserFileEntity(name, age))
+        return userRepository.save(UserFileEntity(name = name, age = age))
     }
 
 }

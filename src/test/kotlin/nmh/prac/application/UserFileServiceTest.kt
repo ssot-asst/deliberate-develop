@@ -27,12 +27,8 @@ class UserFileServiceTest(
         // when
         // then
         then(userService.register(user.name, user.age))
-            .isEqualTo(
-                UserFileEntity(
-                    name = "나민혁",
-                    age = 26
-                )
-            )
+            .extracting("name", "age")
+            .containsExactly("나민혁", 26)
 
     }
 }

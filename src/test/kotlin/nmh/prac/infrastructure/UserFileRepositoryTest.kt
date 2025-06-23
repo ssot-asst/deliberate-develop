@@ -49,6 +49,22 @@ class UserFileRepositoryTest {
                 assertThat(it.age).isEqualTo(user.age)
             }
     }
+
+    @Test
+    fun `데이터를 삽입 할 때 ID가 순차적으로 증가한다`() {
+        // given
+        val user1 = UserFileEntity(name = "나민혁", age = 26)
+        val user2 = UserFileEntity(name = "나나나", age = 53)
+        // when
+        userFileRepository.save(user1)
+        userFileRepository.save(user2)
+        // then
+        val users = userFileRepository.findAll()
+        then(users)
+            .isNotEmpty
+            .hasSize(2)
+        then(users[0].id).isLessThan(users[1].id)
+    }
 }
 
 fun UserFileRepository.deleteAll() {
