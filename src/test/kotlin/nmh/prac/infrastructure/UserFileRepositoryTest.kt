@@ -1,8 +1,7 @@
 package nmh.prac.infrastructure
 
 import nmh.prac.domain.UserFileEntity
-import org.assertj.core.api.BDDAssertions.assertThat
-import org.assertj.core.api.BDDAssertions.then
+import org.assertj.core.api.BDDAssertions.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -147,5 +146,25 @@ class UserFileRepositoryTest {
         latch.await()
         // then
         then(userFileRepository.findAll()).hasSize(20)
+    }
+
+    @Test
+    fun `파일이 너무 크면 OOM이 일어난다`() {
+        // given
+        val largeData = ByteArray(50_000_000) // 50MB 배열
+        val users = mutableListOf<UserFileEntity>()
+
+        // when
+        // then
+        thenThrownBy {
+            repeat(100) { // 5GB 정도면 대부분 환경에서 OOM
+                users.add(
+                    UserFileEntity(
+                        name = String(largeData),
+                        age = it
+                    )
+                )
+            }
+        }.isInstanceOf(OutOfMemoryError::class.java)
     }
 }
