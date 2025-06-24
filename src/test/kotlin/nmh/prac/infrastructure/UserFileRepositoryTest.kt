@@ -4,9 +4,12 @@ import nmh.prac.domain.UserFileEntity
 import org.assertj.core.api.BDDAssertions.assertThat
 import org.assertj.core.api.BDDAssertions.then
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
 
 @SpringBootTest
 class UserFileRepositoryTest {
@@ -117,5 +120,32 @@ class UserFileRepositoryTest {
             .isNotNull
             .extracting("name", "age")
             .containsExactly("나민혁", 26)
+    }
+
+    @Disabled(
+        "동시성을 코드레벨에서 지원하고 있지 않기 때문에 해당 테스트는 통과하지 않는다." +
+                "별도로 통과를 위한다면 save에 `@Synchronized` 어노테이션을 추가해야 한다."
+    )
+    @Test
+    fun `사용자 요청이 동시에 일어날 경우를 확인한다`() {
+        // given
+        val threadCount = 20
+        val executorService = Executors.newFixedThreadPool(10)
+        val latch = CountDownLatch(threadCount)
+
+        // when
+        for (i in 0 until threadCount) {
+            executorService.execute {
+                try {
+                    userFileRepository.save(UserFileEntity(name = "나민혁$i", age = 26 + i))
+                } finally {
+                    latch.countDown()
+                }
+            }
+        }
+
+        latch.await()
+        // then
+        then(userFileRepository.findAll()).hasSize(20)
     }
 }
