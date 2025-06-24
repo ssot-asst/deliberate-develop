@@ -30,4 +30,11 @@ class UserFileService(
         return userRepository.save(updatedUser)
     }
 
+    override fun somethingWithException(id: Long, name: String, age: Int) {
+        userRepository.findById(id) ?: throw NoSuchElementException("ID가 ${id}인 유저가 없습니다.")
+        userRepository.save(UserFileEntity(id = id, name = "김성공", age = 50))
+        throw IllegalArgumentException("무언가 잘못되었기 때문에 예외를 발생시킵니다")
+        userRepository.save(UserFileEntity(id = id, name = name, age = age))
+    }
+
 }

@@ -13,4 +13,6 @@ interface UserService {
     fun deleteById(id: Long)
 
     fun updateById(id: Long, name: String, age: Int): UserModel
+
+    fun somethingWithException(id: Long, string: String, i: Int)
 }
