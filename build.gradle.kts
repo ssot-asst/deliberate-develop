@@ -25,6 +25,14 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
+    testImplementation("org.springframework.restdocs:spring-restdocs-restassured")
+    testImplementation("io.rest-assured:spring-mock-mvc")
+    compileOnly("jakarta.servlet:jakarta.servlet-api")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 kotlin {
