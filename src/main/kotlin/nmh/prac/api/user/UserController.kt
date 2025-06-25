@@ -1,8 +1,8 @@
-package nmh.prac.api
+package nmh.prac.api.user
 
-import nmh.prac.api.request.UserRegisterRequest
-import nmh.prac.api.response.UserResponse
-import nmh.prac.application.UserService
+import nmh.prac.api.user.request.UserRegisterRequest
+import nmh.prac.api.user.response.UserResponse
+import nmh.prac.application.user.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

@@ -1,9 +1,8 @@
-package nmh.prac.infrastructure
+package nmh.prac.infrastructure.user
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import nmh.prac.application.UserRepository
-import nmh.prac.domain.UserFileEntity
-import nmh.prac.domain.UserModel
+import nmh.prac.application.user.UserRepository
+import nmh.prac.domain.user.UserModel
 import org.springframework.stereotype.Component
 import java.io.File
 

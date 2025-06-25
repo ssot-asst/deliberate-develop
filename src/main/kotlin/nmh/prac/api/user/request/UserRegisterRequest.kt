@@ -1,4 +1,4 @@
-package nmh.prac.api.request
+package nmh.prac.api.user.request
 
 data class UserRegisterRequest(
     val name: String,

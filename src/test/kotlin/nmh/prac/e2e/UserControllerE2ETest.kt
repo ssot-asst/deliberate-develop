@@ -1,6 +1,6 @@
-package nmh.prac.api
+package nmh.prac.e2e
 
-import nmh.prac.api.request.UserRegisterRequest
+import nmh.prac.api.user.request.UserRegisterRequest
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestConstructor

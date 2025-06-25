@@ -1,4 +1,4 @@
-package nmh.prac.domain
+package nmh.prac.domain.user
 
 interface UserModel {
     var id: Long
@@ -6,7 +6,7 @@ interface UserModel {
     val age: Int
 }
 
-data class UserFileEntity(
+data class User(
     override var id: Long = 0L,
     override val name: String,
     override val age: Int

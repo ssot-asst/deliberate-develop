@@ -1,6 +1,6 @@
-package nmh.prac.api.response
+package nmh.prac.api.user.response
 
-import nmh.prac.domain.UserModel
+import nmh.prac.domain.user.UserModel
 
 data class UserResponse(
     override var id: Long,

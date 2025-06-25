@@ -1,6 +1,6 @@
-package nmh.prac.application
+package nmh.prac.application.user
 
-import nmh.prac.domain.UserModel
+import nmh.prac.domain.user.UserModel
 
 interface UserService {
 

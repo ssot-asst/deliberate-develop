@@ -1,7 +1,7 @@
-package nmh.prac.infrastructure
+package nmh.prac.infrastructure.user
 
-import nmh.prac.domain.UserFileEntity
-import org.assertj.core.api.BDDAssertions.*
+import org.assertj.core.api.Assertions
+import org.assertj.core.api.BDDAssertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -27,10 +27,10 @@ class UserFileRepositoryTest {
         // when
         val datas = userFileRepository.findAll()
         // then
-        then(datas)
+        BDDAssertions.then(datas)
             .isNotNull
             .allSatisfy {
-                assertThat(it).isInstanceOf(UserFileEntity::class.java)
+                Assertions.assertThat(it).isInstanceOf(UserFileEntity::class.java)
             }
     }
 
@@ -44,11 +44,11 @@ class UserFileRepositoryTest {
         // when
         userFileRepository.save(user)
         // then
-        then(userFileRepository.findAll())
+        BDDAssertions.then(userFileRepository.findAll())
             .isNotEmpty
             .anySatisfy {
-                assertThat(it.name).isEqualTo(user.name)
-                assertThat(it.age).isEqualTo(user.age)
+                Assertions.assertThat(it.name).isEqualTo(user.name)
+                Assertions.assertThat(it.age).isEqualTo(user.age)
             }
     }
 
@@ -62,10 +62,10 @@ class UserFileRepositoryTest {
         userFileRepository.save(user2)
         // then
         val users = userFileRepository.findAll()
-        then(users)
+        BDDAssertions.then(users)
             .isNotEmpty
             .hasSize(2)
-        then(users[0].id).isLessThan(users[1].id)
+        BDDAssertions.then(users[0].id).isLessThan(users[1].id)
     }
 
     @Test
@@ -79,7 +79,7 @@ class UserFileRepositoryTest {
         // when
         userFileRepository.deleteAll()
         // then
-        then(userFileRepository.findAll())
+        BDDAssertions.then(userFileRepository.findAll())
             .isEmpty()
     }
 
@@ -93,16 +93,16 @@ class UserFileRepositoryTest {
         // when
         val users = userFileRepository.findAll()
         // then
-        then(users)
+        BDDAssertions.then(users)
             .isNotEmpty
             .hasSize(2)
             .anySatisfy {
-                assertThat(it.name).isEqualTo("나민혁")
-                assertThat(it.age).isEqualTo(26)
+                Assertions.assertThat(it.name).isEqualTo("나민혁")
+                Assertions.assertThat(it.age).isEqualTo(26)
             }
             .anySatisfy {
-                assertThat(it.name).isEqualTo("나나나")
-                assertThat(it.age).isEqualTo(53)
+                Assertions.assertThat(it.name).isEqualTo("나나나")
+                Assertions.assertThat(it.age).isEqualTo(53)
             }
 
     }
@@ -115,7 +115,7 @@ class UserFileRepositoryTest {
         // when
         val foundUser = userFileRepository.findById(savedUser.id)
         // then
-        then(foundUser)
+        BDDAssertions.then(foundUser)
             .isNotNull
             .extracting("name", "age")
             .containsExactly("나민혁", 26)
@@ -145,7 +145,7 @@ class UserFileRepositoryTest {
 
         latch.await()
         // then
-        then(userFileRepository.findAll()).hasSize(20)
+        BDDAssertions.then(userFileRepository.findAll()).hasSize(20)
     }
 
     @Test
@@ -156,7 +156,7 @@ class UserFileRepositoryTest {
 
         // when
         // then
-        thenThrownBy {
+        BDDAssertions.thenThrownBy {
             repeat(100) { // 5GB 정도면 대부분 환경에서 OOM
                 users.add(
                     UserFileEntity(
