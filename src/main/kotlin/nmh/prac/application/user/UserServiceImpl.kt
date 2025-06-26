@@ -1,11 +1,12 @@
 package nmh.prac.application.user
 
+import jakarta.transaction.Transactional
 import nmh.prac.domain.user.User
 import nmh.prac.domain.user.UserModel
 import org.springframework.stereotype.Component
 
 @Component
-class UserFileService(
+class UserServiceImpl(
     private val userRepository: UserRepository
 ) : UserService {
     override fun register(name: String, age: Int): UserModel {
@@ -30,6 +31,7 @@ class UserFileService(
         return userRepository.save(updatedUser)
     }
 
+    @Transactional
     override fun somethingWithException(id: Long, name: String, age: Int) {
         userRepository.findById(id) ?: throw NoSuchElementException("ID가 ${id}인 유저가 없습니다.")
         userRepository.save(User(id = id, name = "김성공", age = 50))
