@@ -3,9 +3,9 @@ package nmh.prac.infrastructure.user
 import org.assertj.core.api.BDDAssertions.then
 import org.assertj.core.api.BDDAssertions.thenThrownBy
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Description
 import java.util.concurrent.CountDownLatch
@@ -48,12 +48,13 @@ class UserRepositoryImplTest {
         then(userJpaRepository.findAll()).hasSize(20)
     }
 
-    @Description("해당 테스트는 무시가 된다. 이유를 알 수 없음")
+    @Description("해당 테스트는 무시가 된다. 셋업 데이터를 준비하면서 문제가 발생해서 해당 테스트가 무시되는것 같음")
+    @Disabled("OOM이 발생하는 테스트로, 실제로는 실행되지 않습니다.")
     @Test
     fun `한번에 조회하는 데이터가 너무 많으면 OOM이 일어난다`() {
         // given
         val largeDataCount = 1_000_000_000
-        val users = (1..largeDataCount).map { 
+        val users = (1..largeDataCount).map {
             UserJpaEntity(name = "User$it", age = it % 100 + 1)
         }
         userJpaRepository.saveAll(users)

@@ -1,6 +1,8 @@
 package nmh.prac.e2e
 
 import nmh.prac.api.user.request.UserRegisterRequest
+import nmh.prac.infrastructure.user.UserJpaRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestConstructor
@@ -9,8 +11,14 @@ import org.springframework.test.web.reactive.server.WebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class UserControllerE2ETest(
-    private val webTestClient: WebTestClient
+    private val webTestClient: WebTestClient,
+    private val userRepository: UserJpaRepository
 ) {
+
+    @AfterEach
+    fun tearDown() {
+        userRepository.deleteAllInBatch()
+    }
 
     @Test
     fun `새로운 사용자를 등록한다`() {
